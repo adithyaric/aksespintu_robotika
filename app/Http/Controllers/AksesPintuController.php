@@ -106,4 +106,23 @@ class AksesPintuController extends Controller
         return redirect()->route('akses.index')
             ->with('success_message', 'Berhasil Menghapus Data');
     }
+
+    public function accept($id)
+    {
+        if (auth()->user()->role == 'pengguna') {
+            abort(403);
+        }
+        // Retrieve the AksesPintu with the given id
+        $aksesPintu = AksesPintu::findOrFail($id);
+
+        // Change the status of the AksesPintu to 'aktif'
+        // and set the approved_at timestamp
+        $aksesPintu->update([
+            'status' => 'aktif',
+            'approved_at' => now(),
+        ]);
+
+        return redirect()->route('home')
+            ->with('success_message', 'AksesPintu has been accepted');
+    }
 }

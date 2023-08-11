@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\AksesPintu;
+use App\Models\User;
+use App\Notifications\PenggunaCreateAksesPintuNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class PenggunaAksesPintuController extends Controller
 {
@@ -26,7 +29,13 @@ class PenggunaAksesPintuController extends Controller
         ]);
         $data['user_id'] = auth()->id();
         $data['status'] = 'tidak-aktif';
-        AksesPintu::create($data);
+        $aksesPintu = AksesPintu::create($data);
+
+        // Retrieve all users with roles other than 'pengguna'
+        $users = User::where('role', '<>', 'pengguna')->get();
+
+        // Send the notification to these users
+        Notification::send($users, new PenggunaCreateAksesPintuNotification($aksesPintu));
 
         return redirect()->route('home')
             ->with('success_message', 'Berhasil menambah Akses baru');
