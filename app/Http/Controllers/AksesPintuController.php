@@ -50,7 +50,7 @@ class AksesPintuController extends Controller
         if (auth()->user()->role == 'pengguna') {
             abort(403);
         }
-        $aksesPintus = AksesPintu::with('user')->get();
+        $aksesPintus = AksesPintu::with('user')->where('status', 'aktif')->whereNotNull('approved_at')->get();
 
         return AksesPintuResource::collection($aksesPintus)->response()->getData(true)['data'];
     }

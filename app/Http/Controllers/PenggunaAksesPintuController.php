@@ -53,14 +53,16 @@ class PenggunaAksesPintuController extends Controller
     {
         $data = $request->validate([
             'id_rfid' => 'required',
-            'pin' => 'required|same:pin_confirmation',
-            'pin_confirmation' => 'required',
+            'pin' => 'nullable|same:pin_confirmation',
+            'pin_confirmation' => 'nullable',
+            'alasan' => 'nullable',
         ]);
 
         $aksesPintuRequest = AksesPintuRequest::create([
             'user_id' => auth()->id(),
             'id_rfid' => $data['id_rfid'],
             'pin' => $data['pin'],
+            'alasan' => $data['alasan'],
         ]);
 
         // Retrieve all users with roles other than 'pengguna'

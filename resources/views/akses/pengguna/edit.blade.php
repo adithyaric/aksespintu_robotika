@@ -42,6 +42,15 @@
                             @enderror
                         </div>
 
+                        <div class="form-group">
+                            <label for="exampleInputName">Alasan</label>
+                            <input type="password" class="form-control @error('alasan') is-invalid @enderror"
+                                id="exampleInputName" placeholder="Alasan" name="alasan" value="{{ old('alasan') }}">
+                            @error('alasan')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
                     </div>
 
                     <div class="card-footer">

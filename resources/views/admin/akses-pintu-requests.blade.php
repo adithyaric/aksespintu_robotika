@@ -18,6 +18,7 @@
                                     <th>User</th>
                                     <th>ID RFID</th>
                                     <th>PIN</th>
+                                    <th>Alasan</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -27,6 +28,7 @@
                                         <td>{{ $request->user->name }}</td>
                                         <td>{{ $request->id_rfid }}</td>
                                         <td>{{ $request->pin }}</td>
+                                        <td>{{ $request->alasan }}</td>
                                         <td>
                                             <a href="{{ route('admin.akses-pintu-requests.approve', $request->id) }}" class="btn btn-success mb-2">
                                                 Approve <i class="fa fa-plus"></i>

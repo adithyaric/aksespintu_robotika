@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\AksesPintu;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,10 +16,10 @@ class CreateAksesPintuRequestsTable extends Migration
     {
         Schema::create('akses_pintu_requests', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(AksesPintu::class)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->nullable()->constrained()->cascadeOnDelete();
             $table->string('id_rfid')->nullable();
             $table->string('pin')->nullable();
+            $table->string('alasan')->nullable();
             $table->timestamps();
         });
     }
