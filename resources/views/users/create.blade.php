@@ -15,6 +15,18 @@
                     <div class="card-body">
 
                         <div class="form-group">
+                            <label for="">Role</label>
+                            <x-adminlte-select2 id="roles" name="role" class="form-control">
+                                <option value="" selected> =====>Pilih Role<===== </option>
+                                    @foreach ($roles as $role)
+                                    <option value="{{ $role }}">
+                                        {{ $role }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select2>
+                        </div>
+
+                        <div class="form-group">
                             <label for="exampleInputName">Nama</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror"
                                 id="exampleInputName" placeholder="Nama lengkap" name="name" value="{{ old('name') }}">

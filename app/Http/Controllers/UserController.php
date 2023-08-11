@@ -9,22 +9,41 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::orderBy('name')->get();
+        if (auth()->user()->role == 'pengguna') {
+            abort(403);
+        }
 
         return view('users.index', [
-            'users' => $users,
+            'users' => User::orderBy('name')->get(),
         ]);
     }
 
     public function create()
     {
-        return view('users.create');
+        if (auth()->user()->role == 'pengguna') {
+            abort(403);
+        }
+
+        $roles = [
+            'pengguna',
+            'admin',
+            'superadmin',
+        ];
+
+        return view('users.create', [
+            'roles' => $roles,
+        ]);
     }
 
     public function store(Request $request)
     {
+        if (auth()->user()->role == 'pengguna') {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required',
+            'role' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed',
         ]);
@@ -32,6 +51,7 @@ class UserController extends Controller
         $array = $request->only([
             'name',
             'email',
+            'role',
             'password',
         ]);
         $array['password'] = bcrypt($array['password']);
@@ -43,26 +63,45 @@ class UserController extends Controller
 
     public function show($id)
     {
+        if (auth()->user()->role == 'pengguna') {
+            abort(403);
+        }
+
         dd($id);
     }
 
     public function edit($id)
     {
+        if (auth()->user()->role == 'pengguna') {
+            abort(403);
+        }
+
         $user = User::find($id);
+        $roles = [
+            'pengguna',
+            'admin',
+            'superadmin',
+        ];
         if (! $user) {
             return redirect()->route('users.index')
                 ->with('error_message', 'User dengan id '.$id.' tidak ditemukan');
         }
 
         return view('users.edit', [
+            'roles' => $roles,
             'user' => $user,
         ]);
     }
 
     public function update(Request $request, $id)
     {
+        if (auth()->user()->role == 'pengguna') {
+            abort(403);
+        }
+
         $request->validate([
             'name' => 'required',
+            'role' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'sometimes|nullable|confirmed',
         ]);
@@ -70,6 +109,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->role = $request->role;
         if ($request->password) {
             $user->password = bcrypt($request->password);
         }
@@ -85,6 +125,10 @@ class UserController extends Controller
 
     public function destroy(Request $request, $id)
     {
+        if (auth()->user()->role == 'pengguna') {
+            abort(403);
+        }
+
         $user = User::find($id);
 
         if ($id == $request->user()->id) {

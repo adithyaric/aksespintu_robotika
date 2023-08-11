@@ -19,31 +19,24 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role',
+        'jurusan',
+        'angkatan',
+        'lulus',
         'password',
-        'kategori_perawat_id',
-        'nik',
-        'nama',
-        'jenis_kelamin',
-        'no_telp',
-        'alamat',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function akses()
+    {
+        return $this->hasOne(AksesPintu::class);
+    }
 }
