@@ -42,6 +42,7 @@ class UserController extends Controller
         }
 
         $request->validate([
+            'photo' => 'required',
             'name' => 'required',
             'role' => 'required',
             'email' => 'required|email|unique:users,email',
@@ -55,6 +56,11 @@ class UserController extends Controller
             'password',
         ]);
         $array['password'] = bcrypt($array['password']);
+
+        $image_path = $request->file('photo')->store('photo', 'public');
+
+        $array['photo'] = $image_path;
+
         User::create($array);
 
         return redirect()->route('users.index')
@@ -100,6 +106,7 @@ class UserController extends Controller
         }
 
         $request->validate([
+            'photo' => 'nullable',
             'name' => 'required',
             'role' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
@@ -107,6 +114,7 @@ class UserController extends Controller
         ]);
 
         $user = User::find($id);
+        $user->photo = $request->file('photo')->store('photo', 'public') ?? $user->photo;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->role = $request->role;

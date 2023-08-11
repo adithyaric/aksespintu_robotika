@@ -7,7 +7,7 @@
 @stop
 
 @section('content')
-    <form action="{{ route('users.store') }}" method="post">
+    <form action="{{ route('users.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-12">
@@ -18,12 +18,21 @@
                             <label for="">Role</label>
                             <x-adminlte-select2 id="roles" name="role" class="form-control">
                                 <option value="" selected> =====>Pilih Role<===== </option>
-                                    @foreach ($roles as $role)
-                                    <option value="{{ $role }}">
-                                        {{ $role }}
-                                    </option>
+                                        @foreach ($roles as $role)
+                                <option value="{{ $role }}">
+                                    {{ $role }}
+                                </option>
                                 @endforeach
                             </x-adminlte-select2>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Photo</label>
+                            <input type="file" class="form-control @error('photo') is-invalid @enderror"
+                                placeholder="Photo" name="photo" value="{{ old('photo') }}" accept=".jpg, .jpeg, .png">
+                            @error('photo')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div class="form-group">
