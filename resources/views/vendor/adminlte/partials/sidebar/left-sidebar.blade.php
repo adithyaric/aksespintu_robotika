@@ -26,6 +26,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('akses.index') }}">
+                            <i class="fa fa-lock"></i>
+                            <p>Akses</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('akses.akses-pintu-requests.index') }}">
                             <i class="fa fa-unlock"></i>
                             <p>Request Akses</p>
                         </a>

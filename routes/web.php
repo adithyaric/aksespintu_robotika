@@ -20,5 +20,9 @@ Route::group(['middleware' => ['web', 'auth', 'verified']], function () {
     Route::get('/akses/{id}/approved-at', [\App\Http\Controllers\AksesPintuController::class, 'updateApprovedAt'])->name('akses.approved_at');
     Route::get('/akses/{id}/accept', [\App\Http\Controllers\AksesPintuController::class, 'accept'])->name('akses.accept');
 
+    Route::get('/admin/akses', [\App\Http\Controllers\AksesPintuController::class, 'aksesPintuRequests'])->name('akses.akses-pintu-requests.index');
+    Route::get('/admin/akses-pintu-requests/{aksesPintuRequest}/approve', [\App\Http\Controllers\AksesPintuController::class, 'approveAksesPintuRequest'])->name('admin.akses-pintu-requests.approve');
+    Route::get('/admin/akses-pintu-requests/{aksesPintuRequest}/reject', [\App\Http\Controllers\AksesPintuController::class, 'rejectAksesPintuRequest'])->name('admin.akses-pintu-requests.reject');
+
     Route::resource('pengguna', \App\Http\Controllers\PenggunaAksesPintuController::class);
 });

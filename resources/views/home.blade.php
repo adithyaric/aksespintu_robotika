@@ -29,9 +29,12 @@
                                     <td>:</td>
                                     <td>
                                         {{ auth()->user()->akses->id_rfid }}
-                                        <a href="{{ route('akses.edit', auth()->user()->akses) }}" class="mb-1 btn btn-warning">
-                                            Edit <i class="fa fa-edit"></i>
-                                        </a>
+                                        @if (!auth()->user()->requestakses)
+                                            <a href="{{ route('pengguna.edit', auth()->user()->akses) }}"
+                                                class="mb-1 btn btn-warning">
+                                                Edit <i class="fa fa-edit"></i>
+                                            </a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endif

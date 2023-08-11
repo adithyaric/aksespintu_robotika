@@ -40,4 +40,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(AksesPintu::class);
     }
+
+    public function requestakses()
+    {
+        return $this->hasOne(AksesPintuRequest::class);
+    }
 }

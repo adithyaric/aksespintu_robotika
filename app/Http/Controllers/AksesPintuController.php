@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AksesPintuRequest;
 use App\Http\Resources\AksesPintuResource;
 use App\Models\AksesPintu;
+use App\Models\AksesPintuRequest as ModelsAksesPintuRequest;
 use App\Models\User;
 
 class AksesPintuController extends Controller
@@ -124,5 +125,33 @@ class AksesPintuController extends Controller
 
         return redirect()->route('home')
             ->with('success_message', 'AksesPintu has been accepted');
+    }
+
+    public function aksesPintuRequests()
+    {
+        $requests = ModelsAksesPintuRequest::with('user')->get();
+
+        return view('admin.akses-pintu-requests', compact('requests'));
+    }
+
+    public function approveAksesPintuRequest(ModelsAksesPintuRequest $aksesPintuRequest)
+    {
+        AksesPintu::where('user_id', $aksesPintuRequest->user_id)->update([
+            'id_rfid' => $aksesPintuRequest->id_rfid,
+            'pin' => $aksesPintuRequest->pin,
+        ]);
+
+        $aksesPintuRequest->delete();
+
+        return redirect()->route('akses.akses-pintu-requests.index')
+            ->with('success_message', 'Berhasil menyetujui perubahan Akses baru');
+    }
+
+    public function rejectAksesPintuRequest(ModelsAksesPintuRequest $aksesPintuRequest)
+    {
+        $aksesPintuRequest->delete();
+
+        return redirect()->route('akses.akses-pintu-requests.index')
+            ->with('success_message', 'Berhasil menolak perubahan Akses baru');
     }
 }
