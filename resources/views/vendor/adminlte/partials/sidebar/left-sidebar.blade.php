@@ -16,6 +16,10 @@
                         <i class="fa fa-home"></i>
                         <p>Dashboard</p>
                     </a>
+                    <a class="nav-link" href="{{ route('profile', auth()->user()->id) }}">
+                        <i class="fa fa-user"></i>
+                        <p>Profile</p>
+                    </a>
                 </li>
                 @if (\Auth::user()->role != 'pengguna')
                     <li class="nav-item">

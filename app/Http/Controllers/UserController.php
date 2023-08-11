@@ -7,6 +7,23 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function profile($id)
+    {
+        if (auth()->user()->id != $id) {
+            abort(403);
+        }
+
+        $user = User::find($id);
+        if (! $user) {
+            return redirect()->route('users.index')
+                ->with('error_message', 'User dengan id '.$id.' tidak ditemukan');
+        }
+
+        return view('users.profile', [
+            'user' => $user,
+        ]);
+    }
+
     public function index()
     {
         if (auth()->user()->role == 'pengguna') {
@@ -101,23 +118,23 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        if (auth()->user()->role == 'pengguna') {
-            abort(403);
-        }
+        // if (auth()->user()->role == 'pengguna') {
+        //     abort(403);
+        // }
 
         $request->validate([
             'photo' => 'nullable',
             'name' => 'required',
-            'role' => 'required',
+            'role' => 'nullable',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'sometimes|nullable|confirmed',
         ]);
 
         $user = User::find($id);
-        $user->photo = $request->file('photo')->store('photo', 'public') ?? $user->photo;
+        $user->photo = isset($request->photo) ? $request->file('photo')->store('photo', 'public') : $user->photo;
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->role = $request->role;
+        $user->role = $request->role ?? $user->role;
         if ($request->password) {
             $user->password = bcrypt($request->password);
         }
@@ -127,7 +144,7 @@ class UserController extends Controller
 
         // $user->assignRole($request->input('roles'));
 
-        return redirect()->route('users.index')
+        return redirect()->back()
             ->with('success_message', 'Berhasil mengubah user');
     }
 

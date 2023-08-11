@@ -13,8 +13,9 @@ Auth::routes(['verify' => true]);
 Route::group(['middleware' => ['web', 'auth', 'verified']], function () {
     Route::get('/home', function () {
         return view('home');
-    })->name('home')->middleware('auth');
+    })->name('home');
     Route::resource('users', \App\Http\Controllers\UserController::class);
+    Route::get('profile/{id}', [\App\Http\Controllers\UserController::class, 'profile'])->name('profile');
     Route::resource('akses', \App\Http\Controllers\AksesPintuController::class);
     Route::get('akses-print', [\App\Http\Controllers\AksesPintuController::class, 'print'])->name('akses.print');
     Route::get('/akses/{id}/approved-at', [\App\Http\Controllers\AksesPintuController::class, 'updateApprovedAt'])->name('akses.approved_at');
