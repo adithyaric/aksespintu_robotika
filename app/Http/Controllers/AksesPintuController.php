@@ -136,9 +136,10 @@ class AksesPintuController extends Controller
 
     public function approveAksesPintuRequest(ModelsAksesPintuRequest $aksesPintuRequest)
     {
-        AksesPintu::where('user_id', $aksesPintuRequest->user_id)->update([
-            'id_rfid' => $aksesPintuRequest->id_rfid,
-            'pin' => $aksesPintuRequest->pin,
+        $akses = AksesPintu::where('user_id', $aksesPintuRequest->user_id);
+        $akses->update([
+            'id_rfid' => isset($aksesPintuRequest->id_rfid) ? $aksesPintuRequest->id_rfid : $akses->id_rfid,
+            'pin' => isset($aksesPintuRequest->pint) ? $aksesPintuRequest->pint : $akses->pint,
         ]);
 
         $aksesPintuRequest->delete();

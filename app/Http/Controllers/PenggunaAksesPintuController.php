@@ -42,6 +42,13 @@ class PenggunaAksesPintuController extends Controller
             ->with('success_message', 'Berhasil menambah Akses baru');
     }
 
+    public function show($id)
+    {
+        return view('akses.pengguna.show', [
+            'akses' => AksesPintu::find($id),
+        ]);
+    }
+
     public function edit($id)
     {
         return view('akses.pengguna.edit', [
@@ -52,7 +59,7 @@ class PenggunaAksesPintuController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'id_rfid' => 'required',
+            'id_rfid' => 'nullable',
             'pin' => 'nullable|same:pin_confirmation',
             'pin_confirmation' => 'nullable',
             'alasan' => 'nullable',
